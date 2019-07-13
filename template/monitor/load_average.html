@@ -1,0 +1,195 @@
+{% extends 'monitor/base.html' %}
+{% block title %}
+    <title>设备平均负载</title>
+{% endblock title %}
+
+{% block css %}
+    <style>
+        .graph1{
+            margin-left: -15px;
+            width: 350px;
+            height: 350px;
+            float: left;
+        }
+        .hide{
+            display: none;
+            height: 200px;
+        }
+        .font{
+            font-family: "Arial","Microsoft YaHei","黑体","宋体",sans-serif;
+        }
+    </style>
+{% endblock css %}
+
+{% block name %}
+    平均负载
+{% endblock name %}
+
+
+{% block graph %}
+    <div id="graph">
+        <div id="graph1" class="graph_style graph1"></div>
+        <div id="graph2" class="graph_style graph1"></div>
+        <div id="graph3" class="graph_style graph1"></div>
+    </div>
+    <div id="prompt" class="hide">
+        <span class="font">加载失败···</span>
+    </div>
+
+{% endblock graph %}
+
+{% block listname %}
+    <h2></h2>
+{% endblock listname %}
+
+{% block table %}
+    <div id="graph" class="graph_style" style="margin-left: -15px"></div>
+    <div id="prompt" class="hide">
+        <span class="font">加载失败···</span>
+    </div>
+{% endblock table %}
+
+
+{% block graph_script %}
+    <script>
+        $.ajax({
+            url: "load_ajax",
+            type: "get",
+            dataType: "json",
+            success: function (data) {
+                console.log(data);
+                var myChart = echarts.init(document.getElementById('graph1'));
+                option = {
+                    tooltip: {
+                        formatter: "{a} <br/>{b} : {c}%"
+                    },
+                    toolbox: {
+                        feature: {
+                            restore: {},
+                            saveAsImage: {}
+                        }
+                    },
+                    series: [
+                        {
+                            name: '平均负载',
+                            type: 'gauge',
+                            min: 0,
+                            max: 5,
+                            {#detail: {formatter: value},#}
+                            data: data.graph1
+                        }
+                    ],
+                    axisLabel: {
+                        formatter: function (value) {
+                            switch (value) {
+                                // case 0:
+                                //     return 0;//首位刻度？其他都隐藏？反正记住return的是你所需要的label值
+
+                                // case 10:
+                                //     return 0.5
+                                default:
+                                    return value;
+
+                            }
+
+                        }
+                    },
+                };
+                myChart.setOption(option);
+            },
+            error:function(){
+                $("#prompt").removeClass("hide");
+                $("#graph").addClass("hide")
+            }
+        });
+
+        $.ajax({
+            url: "load_ajax",
+            type: "get",
+            dataType: "json",
+            success: function (data) {
+                console.log(data);
+                var myChart = echarts.init(document.getElementById('graph2'));
+                option = {
+                    tooltip: {
+                        formatter: "{a} <br/>{b} : {c}%"
+                    },
+                    toolbox: {
+                        feature: {
+                            restore: {},
+                            saveAsImage: {}
+                        }
+                    },
+                    series: [
+                        {
+                            name: '业务指标',
+                            type: 'gauge',
+                            min: 0,
+                            max: 5,
+                            {#detail: {formatter: value},#}
+                            data: data.graph2
+                        }
+                    ],
+                    axisLabel: {
+                        formatter: function (value) {
+                            switch (value) {
+                                // case 0:
+                                //     return 0;//首位刻度？其他都隐藏？反正记住return的是你所需要的label值
+
+                                // case 10:
+                                //     return 0.5
+                                default:
+                                    return value;
+
+                            }
+
+                        }
+                    },
+                };
+                myChart.setOption(option);
+            }
+        });
+
+        $.ajax({
+            url: "load_ajax",
+            type: "get",
+            dataType: "json",
+            success: function (data) {
+                var myChart = echarts.init(document.getElementById('graph3'));
+                option = {
+                    tooltip: {
+                        formatter: "{a} <br/>{b} : {c}%"
+                    },
+                    toolbox: {
+                        feature: {
+                            restore: {},
+                            saveAsImage: {}
+                        }
+                    },
+                    series: [
+                        {
+                            name: '业务指标',
+                            type: 'gauge',
+                            min: 0,
+                            max: 5,
+                            {#detail: {formatter: value},#}
+                            data: data.graph3
+                        }
+                    ],
+                    axisLabel: {
+                        formatter: function (value) {
+                            switch (value) {
+                                default:
+                                    return value;
+
+                            }
+
+                        }
+                    },
+                };
+                myChart.setOption(option);
+            }
+        })
+    </script>
+{% endblock graph_script %}
+

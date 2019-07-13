@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        .head{
+            background-color: gray;
+            color: white;
+        }
+         .content{
+            height: 50px;
+        }
+        .hide{
+            display: none;
+        }
+        .shadow{
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: gray;
+            opacity: 0.6;
+            z-index: 9;
+        }
+        .text_mo{
+            position: fixed;
+            height: 400px;
+            width: 500px;
+            top: 50%;
+            left: 50%;
+            margin-top: -200px;
+            margin-left: -250px;
+            background-color: white;
+            z-index: 10;
+        }
+    </style>
+</head>
+<body>
+<div style="height: 400px; width: 200px;">
+    <div class="item">
+        <div class="head">标题1</div>
+        <div class="content">内容1</div>
+    </div>
+    <div class="item">
+        <div class="head">标题2</div>
+        <div class="content hide">内容2</div>
+    </div>
+    <div class="item">
+        <div class="head">标题3</div>
+        <div class="content hide">内容3</div>
+    </div>
+    <div>
+        <input id="add_title" type="button" value="添加">
+    </div>
+</div>
+
+<div class="shadow hide"></div>
+
+<div class="text_mo hide">
+    <input type="text" placeholder="user">
+    <input type="text" placeholder="passwd">
+    <div id="concle"><input type="button" value="取消"></div>
+</div>
+<script src="jquery.js"></script>
+<script>
+    $(".head").click(function () {
+        $(this).next().removeClass("hide");
+        $(this).parent().siblings().find(".content").addClass("hide");
+        //jquery支持链式编程
+        $(this).next().removeClass("hide").parent().siblings().find(".content").addClass("hide")
+    })
+    $("#add_title").click(function () {
+        $(this).parent().parent().siblings().removeClass("hide")
+    })
+    $("#concle").click(function () {
+        $(this).parent().addClass("hide").prev().addClass("hide")
+    })
+
+</script>
+</body>
+</html>

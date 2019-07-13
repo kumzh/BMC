@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>弹窗</title>
+    <style>
+        .c1 {
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-color: black;
+            opacity: 0.6;
+            z-index: 9;
+        }
+
+        .c2 {
+            height: 200px;
+            width: 500px;
+            background-color: white;
+            position: fixed;
+            left: 50%;
+            top: 50%;
+            margin-left: -250px;
+            margin-top: -200px;
+            z-index: 10; /*分层级别，大的在上边*/
+
+        }
+
+        .hide {
+            display: none;
+        }
+    </style>
+    <script>
+        function show() {
+            document.getElementById("i1").classList.remove("hide");
+            document.getElementById("i2").classList.remove("hide");
+        }
+
+        function not_show() {
+            document.getElementById("i1").classList.add("hide");
+            document.getElementById("i2").classList.add("hide");
+        }
+        function all_chiose() {
+            var tb = document.getElementById("tb");
+            var tr_list = tb.children;
+            for (var i=0;i<tr_list.length;i++){
+                var th = tr_list[i].children[0] ;  /* 获取th标签 */
+                th.children[0].checked = true ;    /* 获取input标签 */
+            }
+        }
+        function not_all() {
+            var tb = document.getElementById("tb");
+            var tr_list = tb.children;
+            for (var i = 0; i < tr_list.length; i++) {
+                var th = tr_list[i].children[0];
+                /* 获取th标签 */
+                th.children[0].checked = false;
+                /* 获取input标签 */
+            }
+        }
+        function not() {
+            var tb = document.getElementById("tb");
+            var tr_list = tb.children;
+            for (var i = 0; i < tr_list.length; i++) {
+                var th = tr_list[i].children[0];/* 获取th标签 */
+                if (th.children[0].checked){
+                    th.children[0].checked = false;    /* 获取input标签 */
+                }
+                else{
+                    th.children[0].checked = true;
+                }
+            }
+        }
+    </script>
+</head>
+
+<body>
+<div style="margin: 0 auto">
+    <div >
+        <input type="button" value="添加" onclick="show();">
+        <input type="button" value="全选" onclick="all_chiose()">
+        <input type="button" value="反选" onclick="not();">
+        <input type="button" value="取消" onclick="not_all();">
+    </div>
+
+    <div>
+        <table >
+            <thead>
+            <tr>
+                <th>选择</th>
+                <th>ip</th>
+                <th>sys</th>
+            </tr>
+            </thead>
+            <tbody id="tb">
+            <tr>
+                <th><input type="checkbox"></th>
+                <th>192.168.12.1</th>
+                <th>windows</th>
+            </tr>
+            <tr>
+                <th><input type="checkbox"></th>
+                <th>192.168.12.1</th>
+                <th>windows</th>
+            </tr>
+            <tr>
+                <th><input type="checkbox"></th>
+                <th>192.168.12.1</th>
+                <th>windows</th>
+            </tr>
+
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+<!--遮挡层    -->
+<div id="i1" class="c1 hide">
+
+</div>
+
+<!--弹窗     -->
+<div id="i2" class="c2 hide">
+    <input type="text">
+    <input type="text">
+    <div>
+        <input type="button" value="添加">
+        <input type="button" value="取消" onclick="not_show();">
+    </div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+    <meta name="generator" content="Jekyll v3.8.5">
+    {% block title %}
+    <title>系统管理</title>
+
+    {% endblock title %}
+    <link rel="canonical" href="https://getbootstrap.com/docs/4.3/examples/checkout/">
+    <link rel="bookmark" href="/media/ico/setting.ico" />
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    {% block css %}
+
+    {% endblock css  %}
+    <!-- Custom styles for this template -->
+    <!-- script   -->
+
+</head>
+<body class="bg-light">
+
+
+<div class="container">
+    <!-- 页面上部分 -->
+    <div class="py-5 text-center" style="margin: 0 auto">
+        <div class="btn-group mr-2" style="float: right">
+            <a href="{% url 'home:index' %}">
+                <button type="button" class="btn btn-sm btn-outline-secondary">主页</button>
+            </a>
+            {% block button %}
+            <a href="{% url 'message:mesg' %}">
+                <button type="button" class="btn btn-sm btn-outline-secondary">告警</button>
+            </a>
+
+
+            {% endblock button %}
+        </div>
+        {% block title2 %}
+        <h2>系统管理</h2>
+        <p class="lead">在此页面可以将设备加入监控。<br>
+                    注意：在添加设备前请测试snmp的连通性。
+        </p>
+        {% endblock title2 %}
+    </div>
+
+    <!-- 右侧功能栏    -->
+
+    <div class="row">
+        {% block rightrow %}
+        <div class="col-md-4 order-md-2 mb-4">
+            <h4 class="d-flex justify-content-between align-items-center mb-3">
+                <span class="text-muted">已添加设备</span>
+                <span class="badge badge-secondary badge-pill">{{ count }}</span>
+            </h4>
+            <!-- 功能栏开头-->
+            <ul class="list-group mb-3">
+            {% for i in host_obj %}
+                <li class="list-group-item d-flex justify-content-between lh-condensed">
+                    <div>
+                        <h6 class="my-0">设备类型:{{ i.system }}</h6>
+                        <small class="text-muted">ip:{{ i.ip }}
+                            <a href="delete-{{ i.id }}" onclick="del()">删除</a>
+                        </small>
+                    </div>
+                </li>
+            {% endfor %}
+
+
+            </ul>
+        </div>
+        {% endblock rightrow %}
+
+
+
+        <div class="col-md-8 order-md-1">
+        {% block title3 %}
+            <h4 class="mb-3">设备添加</h4>
+        {% endblock title3 %}
+            <!-- 主要信息提交表单    设置name值-->
+            {% block func %}
+            <form name="form" class="needs-validation" action="" method="post">
+            {% csrf_token %}
+                <div class="row">
+                    <div class="col-md-5 mb-3">
+                        <label for="country">设备选择</label>
+                        <select id="type_sel" class="custom-select d-block w-100" name="sys" required>
+                            <option value="">Choose...</option>
+                            <option value="Linux">Linux 服务器</option>
+{#                            <option value="Windows">Windows 服务器</option>#}
+                        </select>
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label for="firstName">团体字</label>
+                        <input id="community" type="text" class="form-control" name="community"  required>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="username">ip 地址</label>
+                    <div class="input-group" style="width: 91%;">
+                        <input id="ip_add" type="text" class="form-control" name="ip" placeholder="ip" required>
+
+                    </div>
+                </div>
+                <div style="width: 200px;">
+                    <div style="float: left">
+                        <input id="test_submit" class="btn btn-primary btn-lg btn-block" type="button" value="测试" ></input>
+                    </div>
+                    <div style="float: right">
+                        <input id="ajax_summit" class="btn btn-primary btn-lg btn-block" type="button" value="提交"></input>
+                    </div>
+                </div>
+                <div style="margin-top: 100px">
+                    <span style="color: red;display: inline-block" >{{ error_message }}</span>
+                </div>
+            </form>
+            {% endblock func %}
+
+        </div>
+
+    </div>
+
+    <footer class="my-5 pt-5 text-muted text-center text-small">
+        <p class="mb-1">&copy; 2019 MONITOR</p>
+        <ul class="list-inline">
+            <li class="list-inline-item"><a href="{% url 'home:index' %}">主页</a></li>
+            <li class="list-inline-item"><a href="{% url 'message:mesg' %}">告警设置</a></li>
+            <li class="list-inline-item"><a href="#">支持</a></li>
+            <li class="list-inline-item"><a href="#"></a></li>
+
+        </ul>
+    </footer>
+</div>
+{#<script src="../../static/jquery.js"></script>#}
+<script src="https://cdn.bootcss.com/jquery/2.2.4/jquery.js"></script>
+{% block script %}
+<script>
+    $("#ajax_summit").click(function () {
+        $.ajax({
+            url:{% url 'bmc_admin:bmc_admin' %},
+            type:"post",
+            data:{
+                csrfmiddlewaretoken:'{{ csrf_token }}',
+                "ip":$("#ip_add").val(),
+                "system":$("#type_sel").val(),
+                "community":$("#community").val(),
+            },
+            success:function (data) {
+                alert(data);
+            }
+        })
+    });
+     $("#test_submit").click(function () {
+        $.ajax({
+            url:'snmp_test/',
+            type:"post",
+            data:{
+                csrfmiddlewaretoken:'{{ csrf_token }}',
+                "ip":$("#ip_add").val(),
+                "system":$("#type_sel").val(),
+                "community":$("#community").val(),
+            },
+            success:function (data) {
+                alert(data);
+            }
+        })
+    })
+</script>
+{% endblock script %}
+</body>
+</html>

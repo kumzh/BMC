@@ -1,0 +1,139 @@
+{% extends 'monitor/base.html' %}
+{% block title %}
+    <title>CPU</title>
+{% endblock title %}
+
+{% block css %}
+    <style>
+        .hide{
+            display: none;
+        }
+        .font{
+            font-family: "Arial","Microsoft YaHei","黑体","宋体",sans-serif;
+        }
+    </style>
+{% endblock css %}
+
+{% block name %}
+    CPU利用率
+{% endblock name %}
+
+
+{% block graph %}
+    <div id="graph" class="graph_style" style="margin-left: -15px"></div>
+    <div id="prompt" class="hide">
+        <span class="font">加载失败···</span>
+    </div>
+{% endblock graph %}
+
+{% block listname %}
+    <h2></h2>
+{% endblock listname %}
+
+{% block table %}
+
+{% endblock table %}
+
+
+{% block graph_script %}
+    <script>
+        $.ajax({
+            url: "cpu_ajax",
+            type: "get",
+            data: {"tag": 1},
+            dataType: "json",
+            success: function (data) {
+                var myChart = echarts.init(document.getElementById('graph'));
+                option = {
+                    title: {
+                        text: '最近'
+                    },
+                    tooltip: {
+                        trigger: 'axis',
+                        {#formatter: "{a} <br/>{b} : {c} ({d}%)",#}
+                        axisPointer: {
+                            type: 'cross',
+                            label: {
+                                backgroundColor: '#6a7985'
+                            }
+                        }
+                    },
+                    legend: {
+                        data: ['CPU利用率']
+                    },
+
+                    toolbox: {
+                        show: true,
+                        feature: {
+                            mark: {show: true},
+                            dataView: {show: true, readOnly: false},
+                            magicType: {
+                                show: true,
+                                type: ['pie', 'funnel'],
+                                option: {
+                                    funnel: {
+                                        x: '25%',
+                                        width: '50%',
+                                        funnelAlign: 'center',
+                                        max: 1548
+                                    }
+                                }
+                            },
+                            restore: {show: true},
+                            saveAsImage: {show: true}
+                        }
+                    },
+                    grid: {
+                        left: '3%',
+                        right: '4%',
+                        bottom: '3%',
+                        containLabel: true
+                    },
+                    xAxis: [
+                        {
+                            type: 'category',
+                            boundaryGap: false,
+                            data: data.times
+                        }
+                    ],
+                    yAxis: [
+                        {
+                            axisLabel: {
+                                name: "百分比",
+                                formatter: '{value} %'
+                            }
+                        },
+                    ],
+                    series: [
+
+                        {
+                            itemStyle: {
+                                normal: {
+                                    label: {
+                                        show: true,
+                                        position: 'top',
+                                        formatter: '{c}%'
+                                    }
+                                }
+                            },
+                            name: 'CPU利用率',
+                            type: 'line',
+                            smooth: true,
+                            stack: '总量',
+                            areaStyle: {},
+                            data: data.Datas
+                        },
+
+                    ]
+                };
+                myChart.setOption(option);
+            },
+            error:function(){
+                $("#prompt").removeClass("hide");
+                $("#graph").addClass("hide")
+            }
+        })
+
+    </script>
+{% endblock graph_script %}
+

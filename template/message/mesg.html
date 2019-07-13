@@ -1,0 +1,122 @@
+{% extends 'bmc_admin/bmc_admin.html' %}
+
+
+{% block title %}
+    <title>告警</title>
+{% endblock title %}
+
+{% block css %}
+    <style>
+        .display{
+            display: none;
+        }
+    </style>
+{% endblock css %}
+
+{% block title2 %}
+    <h2>告警设置</h2>
+{% endblock title2 %}
+
+{% block rightrow %}
+        <div class="col-md-4 order-md-2 mb-4"  >
+            <h4 class="d-flex justify-content-between align-items-center mb-3">
+                <span class="text-muted">已添加推送邮箱</span>
+                <span class="badge badge-secondary badge-pill">{{ count }}</span>
+            </h4>
+            <!-- 功能栏开头-->
+            <ul class="list-group mb-3">
+                {% for i in from_obj %}
+                    <li class="list-group-item d-flex justify-content-between lh-condensed">
+                    <div>
+                        <h6 class="my-0">{{ i.form_mail_add }}</h6>
+                        <small class="text-muted">添加时间：{{ i.in_time }}
+                            <a href="from_delete-{{ i.id }}">删除</a>
+                        </small>
+                    </div>
+                </li>
+                {% endfor %}
+
+            </ul>
+        </div>
+    {% endblock rightrow %}
+
+
+{% block button %}
+    <a href="{% url 'bmc_admin:bmc_admin' %}">
+        <button type="button" class="btn btn-sm btn-outline-secondary">系统管理</button>
+    </a>
+{% endblock button %}
+
+{% block title3 %}
+    <span id="t1" >
+        <h4>推送邮箱设置</h4>
+    </span>
+{% endblock title3 %}
+
+{% block func %}
+
+    <a href="{% url 'message:to_mail_add' %}">
+        <button id="add_to" type="button" class="btn btn-sm btn-outline-secondary">添加接收邮箱</button>
+    </a>
+     <a href="{% url 'message:target_set' %}">
+        <button id="target" type="button" class="btn btn-sm btn-outline-secondary">设置指标阈值</button>
+    </a>
+    <form name="form" class="needs-validation" action="#" method="post">
+    {% csrf_token %}
+        <div class="row">
+            <div id="text1" class="col-md-5 mb-3">
+                <label for="firstName">推送邮箱地址</label>
+                <input id="from_add" type="text" class="form-control" name="from" required="">
+            </div>
+
+            <div id="text2" class="col-md-6 mb-3">
+                <label for="firstName">推送邮箱密码</label>
+                <input id="passwd" type="password" class="form-control" name="from_passwd" required="">
+            </div>
+
+        </div>
+
+        <div style="width: 200px;">
+            <div style="float: left">
+                <input id="test_submit" class="btn btn-primary btn-lg btn-block" type="button" value="登录验证"></input>
+            </div>
+            <div style="float: right">
+                <input id="ajax_summit" class="btn btn-primary btn-lg btn-block" type="button" value="提交"></input>
+            </div>
+        </div>
+
+    </form>
+{% endblock func %}
+
+{% block script %}
+    <script>
+        $("#ajax_summit").click(function () {
+            $.ajax({
+                url:{% url 'message:mesg' %},
+                type: "post",
+                data: {
+                    "from_add": $("#from_add").val(),
+                    "from_passwd": $("#passwd").val(),
+                    csrfmiddlewaretoken:'{{ csrf_token }}',
+                },
+                success: function (data) {
+                    alert(data);
+                }
+            })
+        });
+        $("#test_submit").click(function () {
+            $.ajax({
+                url: 'mail_test/',
+                type: "post",
+                data: {
+                    "from_add": $("#from_add").val(),
+                    "from_passwd": $("#passwd").val(),
+                    csrfmiddlewaretoken:'{{ csrf_token }}'
+                },
+                success: function (data) {
+                    alert(data);
+                }
+            })
+        })
+    </script>
+{% endblock script %}

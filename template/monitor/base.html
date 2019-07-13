@@ -1,0 +1,179 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+    <meta name="generator" content="Jekyll v3.8.5">
+    <meta http-equiv="refresh" content="30">
+    {% block title %}
+        <title>首页</title>
+    {% endblock title %}
+    <link rel="canonical" href="https://getbootstrap.com/docs/4.3/examples/dashboard/">
+    {% block ico %}
+    <link rel="icon" href="/media/ico/detail.ico" type="image/x-icon"/>
+    {% endblock ico %}
+
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <style>
+        .graph_style{
+            height: 400px;
+            width: 100%;
+        }
+    </style>
+    {% block css %}
+
+    {% endblock css %}
+<body>
+
+
+<div class="container-fluid">
+
+<nav class="navbar navbar-dark fixed-top bg-dark flex-md-nowrap p-0 shadow">
+  <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="#">{% block name %}Company name {% endblock name %}</a>
+</nav>
+
+    <div class="row" style="margin: 50px auto">
+        <!-- nav 为侧边功能栏   -->
+        <nav class="col-md-2 d-none d-md-block bg-light sidebar">
+            <div class="sidebar-sticky">
+                <!-- 第一功能栏   -->
+                <ul class="nav flex-column">
+                    <li class="general">
+                        <a class="nav-link" href="summary">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                 fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                 stroke-linejoin="round" class="feather feather-home">
+                                <!-- 图标 -->
+                                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                                <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                            </svg>
+                            总览
+                            <span class="sr-only">(current)</span>
+                        </a>
+                    </li>
+                    <li class="free_mem">
+                        <a class="nav-link" href="total_mem">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                 fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                 stroke-linejoin="round" class="feather feather-shopping-cart">
+                                <line x1="18" y1="20" x2="18" y2="10"></line>
+                                <line x1="12" y1="20" x2="12" y2="4"></line>
+                                <line x1="6" y1="20" x2="6" y2="14"></line>
+                            </svg>
+                            内存利用率
+                        </a>
+                    </li>
+                    <li class="f_cpu_per">
+                        <a class="nav-link" href="cpu">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                 fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                 stroke-linejoin="round" class="feather feather-users">
+                                <line x1="18" y1="20" x2="18" y2="10"></line>
+                                <line x1="12" y1="20" x2="12" y2="4"></line>
+                                <line x1="6" y1="20" x2="6" y2="14"></line>
+                            </svg>
+                            CPU利用率
+                        </a>
+                    </li>
+                    <li class="">
+                        <a class="nav-link" href="load">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                 fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                 stroke-linejoin="round" class="feather feather-users">
+                                <line x1="18" y1="20" x2="18" y2="10"></line>
+                                <line x1="12" y1="20" x2="12" y2="4"></line>
+                                <line x1="6" y1="20" x2="6" y2="14"></line>
+                            </svg>
+                            平均负载
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+
+        <!-- main 为页面的主体    -->
+        <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
+            <!--graph 行   -->
+            <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                <h1 class="h2"></h1>
+                <div class="btn-toolbar mb-2 mb-md-0">
+                    <div class="btn-group mr-2">
+                        <a href="{% url 'bmc_admin:bmc_admin' %}">
+                            <button type="button" class="btn btn-sm btn-outline-secondary">系统管理</button>
+                        </a>
+                        <a href="{% url 'home:index' %}">
+                            <button type="button" class="btn btn-sm btn-outline-secondary">主页</button>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!--图表位置    -->
+            {% block graph %}
+                <div id="graph" class="graph_style">
+
+                </div>
+            {% endblock graph %}
+
+            <!--列表部分    -->
+            {% block listname %}
+            <h2>Section title</h2>
+            {% endblock listname %}
+            <div class="table-responsive">
+                <table class="table table-striped table-sm">
+                    {% block table %}
+                    <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Header</th>
+                        <th>Header</th>
+                        <th>Header</th>
+                        <th>Header</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>1,015</td>
+                        <td>sodales</td>
+                        <td>ligula</td>
+                        <td>in</td>
+                        <td>libero</td>
+                    </tr>
+                    </tbody>
+                    {% endblock table %}
+                </table>
+            </div>
+        </main>
+
+
+    </div>
+</div>
+
+
+
+{% block content %}
+
+{% endblock content %}
+<!--script        -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.bootcss.com/echarts/4.2.1-rc1/echarts.min.js"></script>
+{#    <script src="../../static/jquery.js"></script>#}
+<script src="https://cdn.bootcss.com/jquery/2.2.4/jquery.js"></script>
+    {% block graph_script %}
+
+    {% endblock graph_script %}
+</body>
+</html>

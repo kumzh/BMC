@@ -1,0 +1,394 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="generator" content="Jekyll v3.8.5">
+    <meta http-equiv="refresh" content="30">
+    <title>运维平台</title>
+    <link rel="icon" href="/media/ico/home.ico" type="image/x-icon"/>
+    <link rel="canonical" href="https://getbootstrap.com/docs/4.3/examples/carousel/">
+
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <style>
+        .bd-placeholder-img {
+            font-size: 1.125rem;
+            text-anchor: middle;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+
+        @media (min-width: 768px) {
+            .bd-placeholder-img-lg {
+                font-size: 3.5rem;
+            }
+        }
+        .graph{
+            width: 300px;
+            height:300px;
+            margin: auto;
+            margin-bottom: -50px
+        }
+    </style>
+    <!-- Custom styles for this template -->
+
+
+</head>
+<body>
+<header>
+    <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+        <a class="navbar-brand" href="#"></a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse"
+                aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="{% url 'home:index' %}">主页 <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'bmc_admin:bmc_admin' %}">系统管理</a>
+                </li>
+
+            </ul>
+            <form class="form-inline mt-2 mt-md-0" action="/login/logout/" method="post">
+                {% csrf_token %}
+                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">注销</button>
+            </form>
+        </div>
+    </nav>
+</header>
+
+<main role="main">
+
+    <!-- Marketing messaging and featurettes
+    ================================================== -->
+    <!-- Wrap the rest of the page in another container to center all the content. -->
+
+    <div class="container marketing" style="margin-top: 100px; text-align: center">
+
+        <!-- Three columns of text below the carousel -->
+        <div class="row">
+            <div class="col-lg-4">
+                <div id="cpu" class="bd-placeholder-img rounded-circle graph" >
+
+                </div>
+                <h2>CPU</h2>
+
+{#                <p><a class="btn btn-secondary" href="#" role="button">View details &raquo;</a></p>#}
+            </div>
+            <!-- /.col-lg-4 -->
+            <div class="col-lg-4">
+                <div id="memo" class="bd-placeholder-img rounded-circle graph">
+
+
+                </div>
+                <h2>内存</h2>
+
+{#                <p><a class="btn btn-secondary" href="#" role="button">View details &raquo;</a></p>#}
+            </div>
+            <!-- /.col-lg-4 -->
+            <div class="col-lg-4">
+                <div id="device" class="bd-placeholder-img rounded-circle graph" >
+
+                </div>
+                <h2>设备</h2>
+
+{#                <p><a class="btn btn-secondary" href="#" role="button">View details &raquo;</a></p>#}
+            </div>
+            <!-- /.col-lg-4 -->
+        </div>
+        <!-- /.row -->
+
+
+        <!-- START THE FEATURETTES -->
+
+        <hr class="featurette-divider">
+
+        <div class="row featurette" style="width: 100%">
+            <div style="width: 100%;height: 500px">
+                <h2 class="featurette-heading" style="text-align: left">设备列表</h2>
+                <div class="table-responsive" >
+                    <table class="table table-striped table-sm" >
+                        {% block table %}
+                        <thead>
+                        <tr>
+                            <th>ip地址</th>
+                            <th>设备类型</th>
+                            <th>团体字</th>
+
+
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for i in obj %}
+                        <tr>
+                            <td><a href="/monitor/{{ i.id }}/summary" >{{ i.ip }}</a></td>
+                            <td>{{ i.system }}</td>
+                            <td>{{ i.community }}</td>
+
+                        </tr>
+                        {% endfor %}
+                        </tbody>
+                        {% endblock table %}
+                    </table>
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- /END THE FEATURETTES -->
+    </div><!-- /.container -->
+
+
+    <!-- FOOTER -->
+    <footer class="container" >
+        <p class="float-right"><a href="#">Back to top</a></p>
+        <p style="text-align: center">&copy; 2019 MONITOR &middot; <a href="#">Privacy</a> &middot; <a href="#">Terms</a></p>
+    </footer>
+</main>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+{#<script src="/static/jquery.js"></script>#}
+<script src="https://cdn.bootcss.com/jquery/2.2.4/jquery.js"></script>
+<script src="https://cdn.bootcss.com/echarts/4.2.1-rc1/echarts.min.js"></script>
+{#<script src="/static/echarts.js"></script>#}
+
+
+<script>
+    $.ajax({
+            url:{% url 'home:graph3' %},
+            type:"get",
+            dataType: 'json',
+            success:function (obj_data) {
+                console.log(obj_data);
+                var device = echarts.init(document.getElementById('device'));
+                option = {
+                tooltip : {
+                    trigger: 'item',
+                    formatter: "{a} <br/>{b} : {c} ({d}%)"
+                },
+                legend: {
+                    orient : 'vertical',
+                    x : 'left',
+                    data:obj_data.legend
+                },
+                toolbox: {
+                    show : true,
+                    feature : {
+                        mark : {show: true},
+                        dataView : {show: true, readOnly: false},
+                        magicType : {
+                            show: true,
+                            type: ['pie', 'funnel'],
+                            option: {
+                                funnel: {
+                                    x: '25%',
+                                    width: '50%',
+                                    funnelAlign: 'center',
+                                    max: 1548
+                                }
+                            }
+                        },
+                        restore : {show: true},
+                        saveAsImage : {show: true}
+                    }
+                },
+                {#calculable : true,#}
+                series : [
+                    {
+                        name:'操作系统',
+                        type:'pie',
+                        radius : ['20%', '40%'],
+                        itemStyle : {
+                            normal : {
+                                label : {
+                                    show : true
+                                },
+                                labelLine : {
+                                    show : true
+                                }
+                            },
+                            emphasis : {
+                                label : {
+                                    show : false,
+                                    position : 'center',
+                                    textStyle : {
+                                        fontSize : '20',
+                                        fontWeight : 'normal'
+                                    }
+                                }
+                            }
+                        },
+                        data:obj_data.data
+                    }
+                ]
+            };
+                device.setOption(option)
+                        }
+    })
+</script>
+<script>
+    $.ajax({
+            url:{% url 'home:graph2' %},
+            type:"get",
+            data:{"tag":2},
+            dataType: 'json',
+            success:function (obj_data) {
+                var memo = echarts.init(document.getElementById('memo'));
+                option = {
+                    tooltip: {
+                        trigger: 'item',
+                        formatter: "{a} <br/>{b} : {c} ({d}%)"
+                    },
+                    legend: {
+                        orient: 'vertical',
+                        x: 'left',
+                        data: obj_data.legend
+                    },
+                    toolbox: {
+                        show: true,
+                        feature: {
+                            mark: {show: true},
+                            dataView: {show: true, readOnly: false},
+                            magicType: {
+                                show: true,
+                                type: ['pie', 'funnel'],
+                                option: {
+                                    funnel: {
+                                        x: '25%',
+                                        width: '50%',
+                                        funnelAlign: 'center',
+                                        max: 1548
+                                    }
+                                }
+                            },
+                            restore: {show: true},
+                            saveAsImage: {show: true}
+                        }
+                    },
+                    calculable: true,
+                    series: [
+                        {
+                            name: '内存利用率',
+                            type: 'pie',
+                            radius: ['20%', '40%'],
+                            itemStyle: {
+                                normal: {
+                                    label: {
+                                        show: true
+                                    },
+                                    labelLine: {
+                                        show: true
+                                    }
+                                },
+                                emphasis: {
+                                    label: {
+                                        show: false,
+                                        position: 'center',
+                                        textStyle: {
+                                            fontSize: '30',
+                                            fontWeight: 'bold'
+                                        }
+                                    }
+                                }
+                            },
+                            data: obj_data.data
+                        }
+                    ]
+                };
+                memo.setOption(option);
+            }
+    })
+
+</script>
+<script>
+     $.ajax({
+            url:{% url 'home:graph1' %},
+            type:"get",
+            data:{"tag":1},
+            dataType: 'json',
+            success:function (obj_data) {
+                var test2 = echarts.init(document.getElementById('cpu'));
+                option = {
+                    tooltip: {
+                        trigger: 'item',
+                        formatter: "{a} <br/>{b} : {c} ({d}%)"
+                    },
+                    legend: {
+                        orient: 'vertical',
+                        x: 'left',
+                        data: obj_data.legend
+                    },
+                    toolbox: {
+                        show: true,
+                        feature: {
+                            mark: {show: true},
+                            dataView: {show: true, readOnly: false},
+                            magicType: {
+                                show: true,
+                                type: ['pie', 'funnel'],
+                                option: {
+                                    funnel: {
+                                        x: '25%',
+                                        width: '50%',
+                                        funnelAlign: 'center',
+                                        max: 1548
+                                    }
+                                }
+                            },
+                            restore: {show: true},
+                            saveAsImage: {show: true}
+                        }
+                    },
+                    calculable: true,
+                    series: [
+                        {
+                            name: 'cpu利用率',
+                            type: 'pie',
+                            radius: ['20%', '40%'],
+                            itemStyle: {
+                                normal: {
+                                    label: {
+                                        show: true
+                                    },
+                                    labelLine: {
+                                        show: true
+                                    }
+                                },
+                                emphasis: {
+                                    label: {
+                                        show: false,
+                                        position: 'center',
+                                        textStyle: {
+                                            fontSize: '30',
+                                            fontWeight: 'bold'
+                                        }
+                                    }
+                                }
+                            },
+                            data: obj_data.data
+                        }
+                    ]
+                };
+                test2.setOption(option);
+            }
+     })
+</script>
+</body>
+</html>

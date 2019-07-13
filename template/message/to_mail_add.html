@@ -1,0 +1,113 @@
+{% extends 'bmc_admin/bmc_admin.html' %}
+
+
+{% block title %}
+    <title>告警</title>
+{% endblock title %}
+
+{% block css %}
+    <style>
+        .display{
+            display: none;
+        }
+    </style>
+{% endblock css %}
+
+{% block title2 %}
+    <h2>告警设置</h2>
+{% endblock title2 %}
+
+{% block rightrow %}
+        <div class="col-md-4 order-md-2 mb-4">
+            <h4 class="d-flex justify-content-between align-items-center mb-3">
+                <span class="text-muted">已添加接收邮箱</span>
+                <span class="badge badge-secondary badge-pill">{{ count }}</span>
+            </h4>
+            <!-- 功能栏开头-->
+            <ul class="list-group mb-3">
+                {% for i in to_obj %}
+                    <li class="list-group-item d-flex justify-content-between lh-condensed">
+                    <div>
+                        <h6 class="my-0">{{ i.to_mail }}</h6>
+                        <small class="text-muted">添加时间：{{ i.in_time }}
+                            <a href="to_delete-{{ i.id }}">删除</a>
+                        </small>
+                    </div>
+                </li>
+                {% endfor %}
+
+            </ul>
+        </div>
+    {% endblock rightrow %}
+
+{% block button %}
+    <a href="{% url 'bmc_admin:bmc_admin' %}">
+        <button type="button" class="btn btn-sm btn-outline-secondary">系统管理</button>
+    </a>
+{% endblock button %}
+
+{% block title3 %}
+    <span id="t2">
+        <h4>接收邮箱设置</h4>
+    </span>
+{% endblock title3 %}
+
+{% block func %}
+    <a href="{% url "message:mesg" %}">
+        <button id="add_from" type="button" class="btn btn-sm btn-outline-secondary">添加推送邮箱</button>
+    </a>
+    <a href="{% url 'message:target_set' %}">
+        <button id="target" type="button" class="btn btn-sm btn-outline-secondary">设置指标阈值</button>
+    </a>
+    <form name="form" class="needs-validation"  method="post">
+        {% csrf_token %}
+        <div class="row">
+            <div id="text3" class="col-md-6 mb-3">
+                <label for="firstName">接收邮箱地址</label>
+                <input id="to_add" type="text" class="form-control" name="to" required>
+            </div>
+        </div>
+
+        <div style="width: 200px;">
+            <div style="float: left">
+                <input id="test_submit" class="btn btn-primary btn-lg btn-block" type="button" value="测试邮件"></input>
+            </div>
+            <div style="float: right">
+                <input id="ajax_summit" class="btn btn-primary btn-lg btn-block" type="button" value="提交"></input>
+            </div>
+        </div>
+
+    </form>
+{% endblock func %}
+
+{% block script %}
+    <script>
+        $("#ajax_summit").click(function () {
+            $.ajax({
+                url:'/mail/to_mail_add/',
+                type: "post",
+                data: {
+                    "to_add": $("#to_add").val(),
+                    csrfmiddlewaretoken:'{{ csrf_token }}'
+                },
+                success: function (data) {
+                    alert(data);
+                }
+            })
+        });
+
+        $("#test_submit").click(function () {
+            $.ajax({
+                url: '/mail/to_mail_test/',
+                type: "post",
+                data: {
+                    "to_add": $("#to_add").val(),
+                    csrfmiddlewaretoken:'{{ csrf_token }}'
+                },
+                success: function (data) {
+                    alert(data);
+                }
+            })
+        });
+    </script>
+{% endblock script %}
